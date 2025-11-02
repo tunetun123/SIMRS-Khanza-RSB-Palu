@@ -188,6 +188,17 @@ public class koneksiDB {
         return var;
     }
     
+    // satu sehat realtime
+    public static String SATUSEHATREALTIME() {
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("SATUSEHATREALTIME");          
+        } catch(Exception e) {
+            var="";
+        }
+        return var;
+    }
+    
     public static String ANTRIAN(){
         try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
             prop.loadFromXML(fis);

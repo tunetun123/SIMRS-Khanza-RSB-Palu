@@ -12,6 +12,8 @@
 
 
 package simrskhanza;
+import bridging.ApiSatuSehat;
+import bridging.ApiSatuSehatEndpoint;
 import bridging.BPJSCekDataIndukKecelakaan;
 import bridging.BPJSCekSuplesiJasaRaharja;
 import permintaan.DlgBookingOperasi;
@@ -294,6 +296,11 @@ public final class DlgReg extends javax.swing.JDialog {
             validasiregistrasi="No",validasicatatan="No",norawatdipilih="",normdipilih="";
     private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy/MM/dd");
     private char ESC = 27;
+    
+    // Encounter Variable
+    private String idDokter="", idPasien="", SATUSEHATREALTIME="";
+    private ApiSatuSehatEndpoint satuSehatKirim = new ApiSatuSehatEndpoint();
+    
     // ganti kertas
     private char[] FORM_FEED = {12};
     // reset setting
@@ -994,6 +1001,12 @@ public final class DlgReg extends javax.swing.JDialog {
             }
         } catch (Exception e) {
             validasicatatan="No";
+        }
+        
+        try {
+            SATUSEHATREALTIME = koneksiDB.SATUSEHATREALTIME();
+        } catch(Exception e) {
+            SATUSEHATREALTIME = "no";
         }
         
         ChkInput.setSelected(false);
@@ -17582,7 +17595,14 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
                 });
                 LCount.setText(""+tabMode.getRowCount());
             } 
-            emptTeks();  
+            
+            // Kirim Encounter Satusehat
+            if(SATUSEHATREALTIME.equals("yes")) {
+                satuSehatKirim.encounter(TNoRw.getText(), KdDokter.getText(), TNoRM.getText(), kdpoli.getText(), false);                                    
+            }
+            
+            emptTeks();
+            
             ceksukses=false;
         }  
     }
@@ -18903,6 +18923,12 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
             tabMode.setValueAt(NoTelp.getText(),tbPetugas.getSelectedRow(),18);
             tabMode.setValueAt(kdpoli.getText(),tbPetugas.getSelectedRow(),21);
             tabMode.setValueAt(kdpnj.getText(),tbPetugas.getSelectedRow(),22);
+            
+            // Kirim Encounter Satusehat
+            if(SATUSEHATREALTIME.equals("yes")) {
+                satuSehatKirim.encounter(TNoRw.getText(), KdDokter.getText(), TNoRM.getText(), kdpoli.getText(), true);                                    
+            }
+            
             emptTeks();
         }
     }

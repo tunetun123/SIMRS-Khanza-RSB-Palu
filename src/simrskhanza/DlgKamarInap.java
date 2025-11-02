@@ -6114,7 +6114,8 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                     ttlbiaya.getText()+"','-'","No.Rawat")==true){
                                 Sequel.mengedit("reg_periksa","no_rawat='"+norawat.getText()+"'","status_lanjut='Ranap'");
                                 Sequel.mengedit("kamar","kd_kamar='"+kdkamar.getText()+"'","status='ISI'");                
-                                emptTeks();  
+                                emptTeks();
+//                                DISINI MULAI KIRIM ENCOUNTER RANAP
                                 tampil(); 
                             }   
                             break;

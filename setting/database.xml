@@ -3,7 +3,7 @@
 <properties>
     <comment>KhanzaHMS</comment> 
     <entry key="HOST">5k7+C7EnUw9nUv2Nix+DBA==</entry>
-    <entry key="DATABASE">AZHNccBwSmSho84f+X8GyQ==</entry>
+    <entry key="DATABASE">Q/A6/fvJNnYSSWZmZ8SdzA==</entry>
     <entry key="PORT">nioxtijcpDaKSUiUiP5FAg==</entry>
     <entry key="USER">kMR3WfAwUK6MbhCyydxa0g==</entry>
     <entry key="PAS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
@@ -90,16 +90,21 @@
     <entry key="URLAPICORONA">http://sirs.kemkes.go.id/fo/index.php</entry>
     <entry key="IDCORONA">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="PASSCORONA">l4nh5eVYrLAER/I2A4b3Tw==</entry>
-    <entry key="CLIENTIDSATUSEHAT">84gc+gN5BhcCxLoJxHODBleZUdYHZiR2pYAb9T/w6hhyuWrFJFvPM7UvdNVtl7Sestw5ZVpC9SI/UUmSqSmYsA==</entry>
-    <entry key="SECRETKEYSATUSEHAT">ukhrihQzC2cCqQ+DQy7T+wkKxe2YFfvnv1vQr/eAycsbJOiU0j6eeo7CFJE6D/WlEcwqwFE15TGfO5qcMTm+wclfWqpiscCeYZA9pZ/+44o=</entry>
-    <entry key="URLAUTHSATUSEHAT">https://api-satusehat-dev.dto.kemkes.go.id/oauth2/v1</entry> 
-    <entry key="URLFHIRSATUSEHAT">https://api-satusehat-dev.dto.kemkes.go.id/fhir-r4/v1</entry>
-    <entry key="IDSATUSEHAT">Z64Bi97zYtxq3TuJDUb/ng==</entry>
-    <entry key="KELURAHANSATUSEHAT">3313160009</entry>
-    <entry key="KECAMATANSATUSEHAT">3313160</entry>
-    <entry key="KABUPATENSATUSEHAT">3313</entry>
-    <entry key="PROPINSISATUSEHAT">33</entry>
-    <entry key="KODEPOSSATUSEHAT">57752</entry>
+    
+    <entry key="CLIENTIDSATUSEHAT">c3M8pV/gANV0+wjgA4AI3RronpOFLmCsF5MXcvgVSe+cQszSvm6uuaJ2JNoIK2xN61vpvFgFEm25WWSdNUgpjw==</entry>
+    <entry key="SECRETKEYSATUSEHAT">iUl8iKePsrreDgvZXIVjqrV9Oiw5QjPz4UlhQUWBpYhGrzixYerV0M+2wTc8ZMms0hEfnAHuL7SFQaaGOhg3ioQXfqyt/A5zxDqznUyVm+o=</entry>
+    <entry key="URLAUTHSATUSEHAT">https://api-satusehat-stg.dto.kemkes.go.id/oauth2/v1</entry> 
+    <entry key="URLFHIRSATUSEHAT">https://api-satusehat-stg.dto.kemkes.go.id/fhir-r4/v1</entry>
+    <entry key="IDSATUSEHAT">UIOF1WK3Rn1I6RnAp7yo5dOEACecW9C6RDZKeUXw3Z7f1YTugtv6uNAhuUrA15eG</entry>
+    
+    <entry key="SATUSEHATREALTIME">yes</entry>
+    
+    <entry key="KELURAHANSATUSEHAT">7271011007</entry>
+    <entry key="KECAMATANSATUSEHAT">727101</entry>
+    <entry key="KABUPATENSATUSEHAT">7271</entry>
+    <entry key="PROPINSISATUSEHAT">72</entry>
+    <entry key="KODEPOSSATUSEHAT">94118</entry>
+    
     <entry key="KAMARAKTIFRANAP"></entry>
     <entry key="DOKTERAKTIFKASIRRALAN"></entry>
     <entry key="POLIAKTIFKASIRRALAN"></entry>
