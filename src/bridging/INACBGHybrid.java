@@ -52,6 +52,8 @@ import javax.swing.SwingUtilities;
 import keuangan.DlgBilingRalan;
 import keuangan.DlgBilingRanap;
 import laporan.DlgDiagnosaPenyakit;
+import rekammedis.RMDataResumePasien;
+import rekammedis.RMDataResumePasienRanap;
 import rekammedis.RMRiwayatPerawatan;
 
 /**
@@ -353,6 +355,76 @@ public class INACBGHybrid extends javax.swing.JDialog {
                                                 billing.setLocationRelativeTo(internalFrame1);
                                                 billing.setVisible(true);
                                             }
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println("Notif : "+e);
+                                    } finally{
+                                        if(rs!=null){
+                                            rs.close();
+                                        }
+                                        if(ps!=null){
+                                            ps.close();
+                                        }
+                                    }   
+                                }else if(engine.getLocation().replaceAll("http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/","").contains("Resume")){
+                                    URL=engine.getLocation().replaceAll("Resume","no");
+                                    ps=koneksi.prepareStatement("select temppanggilnorawat.no_rawat, reg_periksa.status_lanjut,reg_periksa.no_rkm_medis, CURDATE() AS tgl_sekarang, pasien.nm_pasien "+
+                                            "from temppanggilnorawat inner join reg_periksa on temppanggilnorawat.no_rawat=reg_periksa.no_rawat "+
+                                            "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis");
+                                    try {
+                                        rs=ps.executeQuery();
+                                        if(rs.next()){
+                                           if(rs.getString("status_lanjut").equals("Ralan")){
+                                                RMDataResumePasien resumeDokter=new RMDataResumePasien(null,false);
+                                                resumeDokter.addWindowListener(new WindowListener() {
+                                                    @Override
+                                                    public void windowOpened(WindowEvent e) {}
+                                                    @Override
+                                                    public void windowClosing(WindowEvent e) {}
+                                                    @Override
+                                                    public void windowClosed(WindowEvent e) {
+                                                        loadURL(URL);
+                                                    }
+                                                    @Override
+                                                    public void windowIconified(WindowEvent e) {}
+                                                    @Override
+                                                    public void windowDeiconified(WindowEvent e) {}
+                                                    @Override
+                                                    public void windowActivated(WindowEvent e) {}
+                                                    @Override
+                                                    public void windowDeactivated(WindowEvent e) {}
+                                                });
+                                                resumeDokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+                                                resumeDokter.setLocationRelativeTo(internalFrame1);
+                                                resumeDokter.setNoRm(rs.getString("no_rawat"),rs.getDate("tgl_sekarang"));
+                                                resumeDokter.tampil();
+                                                resumeDokter.setVisible(true);
+                                           } else if(rs.getString("status_lanjut").equals("Ranap")) {
+                                               RMDataResumePasienRanap resumeDokter=new RMDataResumePasienRanap(null,false);
+                                                resumeDokter.addWindowListener(new WindowListener() {
+                                                    @Override
+                                                    public void windowOpened(WindowEvent e) {}
+                                                    @Override
+                                                    public void windowClosing(WindowEvent e) {}
+                                                    @Override
+                                                    public void windowClosed(WindowEvent e) {
+                                                        loadURL(URL);
+                                                    }
+                                                    @Override
+                                                    public void windowIconified(WindowEvent e) {}
+                                                    @Override
+                                                    public void windowDeiconified(WindowEvent e) {}
+                                                    @Override
+                                                    public void windowActivated(WindowEvent e) {}
+                                                    @Override
+                                                    public void windowDeactivated(WindowEvent e) {}
+                                                });
+                                                resumeDokter.setNoRm(rs.getString("no_rawat"),rs.getDate("tgl_sekarang"));
+                                                resumeDokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+                                                resumeDokter.setLocationRelativeTo(internalFrame1);
+                                                resumeDokter.tampil();
+                                                resumeDokter.setVisible(true);
+                                           }
                                         }
                                     } catch (Exception e) {
                                         System.out.println("Notif : "+e);
