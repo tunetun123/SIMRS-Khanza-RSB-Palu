@@ -2163,7 +2163,7 @@ public class frmUtama extends javax.swing.JFrame {
 
         tanggal.setEditable(false);
         tanggal.setForeground(new java.awt.Color(50, 70, 50));
-        tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "19/10/2025" }));
+        tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "23/10/2025" }));
         tanggal.setDisplayFormat("dd/MM/yyyy");
         tanggal.setName("tanggal"); // NOI18N
         tanggal.setOpaque(false);
@@ -3588,7 +3588,8 @@ public class frmUtama extends javax.swing.JFrame {
         });
 
         btnRl32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/48x48/Gnome-X-Office-Address-Book-48.png"))); // NOI18N
-        btnRl32.setText("RL 3.2 Rawat Darurat");
+        btnRl32.setText("RL 3.3 Rekapitulasi Kegiatan Rawat Darurat SIRS 6.3");
+        btnRl32.setToolTipText("");
         btnRl32.setIconTextGap(0);
         btnRl32.setName("btnRl32"); // NOI18N
         btnRl32.setPreferredSize(new java.awt.Dimension(200, 90));
