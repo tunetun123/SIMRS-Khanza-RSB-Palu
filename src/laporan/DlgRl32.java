@@ -42,9 +42,9 @@ public final class DlgRl32 extends javax.swing.JDialog {
     private PreparedStatement ps;
     private ResultSet rs;
     private int i=0,rujukan=0,nonrujukan=0,dirawat=0,dirujuk=0,pulang=0,
-            matiigdL=0,matiigdP=0,doaL=0,doaP=0,lukaL=0,lukaP=0,
+            matiigdL=0,matiigdP=0,doaL=0,doaP=0,lukaL=0,lukaP=0,falseEmer=0,
             ttlrujukan=0,ttlnonrujukan=0,ttldirawat=0,ttldirujuk=0,ttlpulang=0,
-            ttlmatiigdL=0,ttlmatiigdP=0,ttldoaL=0,ttldoaP=0,ttllukaL=0,ttllukaP=0;   
+            ttlmatiigdL=0,ttlmatiigdP=0,ttldoaL=0,ttldoaP=0,ttllukaL=0,ttllukaP=0,ttlfalseEmer=0;   
     /** Creates new form DlgLhtBiaya
      * @param parent
      * @param modal */
@@ -54,7 +54,7 @@ public final class DlgRl32 extends javax.swing.JDialog {
         this.setLocation(8,1);
         setSize(885,674);
 
-        Object[] rowRwJlDr={"No.","Jenis Pelayanan","Rujukan","Non Rujukan","Dirawat","Dirujuk","Pulang","Mati di IGD (L)","Mati di IGD (P)","Doa (L)","Doa (P)","Luka-Luka (L)","Luka-Luka (P)"};
+        Object[] rowRwJlDr={"No.","Jenis Pelayanan","Rujukan","Non Rujukan","Dirawat","Dirujuk","Pulang","Mati di IGD (L)","Mati di IGD (P)","Doa (L)","Doa (P)","Luka-Luka (L)","Luka-Luka (P)","False Emergency"};
         tabMode=new DefaultTableModel(null,rowRwJlDr){
               @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
@@ -82,7 +82,7 @@ public final class DlgRl32 extends javax.swing.JDialog {
         try {
             ps=koneksi.prepareStatement(
                     "select master_triase_macam_kasus.kode_kasus,master_triase_macam_kasus.macam_kasus from master_triase_macam_kasus " +
-                    "where master_triase_macam_kasus.macam_kasus like ? order by master_triase_macam_kasus.macam_kasus");
+                    "where master_triase_macam_kasus.macam_kasus like ? order by master_triase_macam_kasus.kode_kasus");
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -286,7 +286,12 @@ public final class DlgRl32 extends javax.swing.JDialog {
                                     tabMode.getValueAt(r,5).toString()+"','"+
                                     tabMode.getValueAt(r,6).toString()+"','"+
                                     tabMode.getValueAt(r,7).toString()+"','"+
-                                    tabMode.getValueAt(r,8).toString()+"','','','','','','','','','','','','','','','','','','','','','','','','','','','','"+akses.getalamatip()+"'","Rekap Nota Pembayaran");
+                                    tabMode.getValueAt(r,8).toString()+"','"+
+                                    tabMode.getValueAt(r,9).toString()+"','"+
+                                    tabMode.getValueAt(r,10).toString()+"','"+
+                                    tabMode.getValueAt(r,11).toString()+"','"+
+                                    tabMode.getValueAt(r,12).toString()+"','"+
+                                    tabMode.getValueAt(r,13).toString()+"','','','','','','','','','','','','','','','','','','','','','','','"+akses.getalamatip()+"'","Rekap Nota Pembayaran");
                 }                    
             }
                
@@ -411,6 +416,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             doaP=0;
             lukaL=0;
             lukaP=0;
+            falseEmer=0;
             ttlrujukan=0;
             ttlnonrujukan=0;
             ttldirawat=0;
@@ -422,6 +428,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             ttldoaP=0;
             ttllukaL=0;
             ttllukaP=0;
+            ttlfalseEmer=0;
             while(rs.next()){
 //                rujukan=Sequel.cariInteger("select count(rujuk_masuk.no_rawat) from reg_periksa inner join rujuk_masuk "+
 //                        "on rujuk_masuk.no_rawat=reg_periksa.no_rawat where reg_periksa.kd_poli='"+rs.getString("kd_poli")+"' and "+
@@ -430,10 +437,13 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 rujukan = Sequel.cariInteger("SELECT COUNT(rujuk_masuk.no_rawat) FROM reg_periksa "
                         + "INNER JOIN data_triase_igd "
                         + "ON reg_periksa.no_rawat = data_triase_igd.no_rawat "
+                        
                         + "INNER JOIN master_triase_macam_kasus "
                         + "ON data_triase_igd.kode_kasus = master_triase_macam_kasus.kode_kasus "
+                        
                         + "INNER JOIN rujuk_masuk "
                         + "ON reg_periksa.no_rawat = rujuk_masuk.no_rawat "
+                        
                         + "WHERE master_triase_macam_kasus.kode_kasus = '"+rs.getString("kode_kasus")+"' "
                         + "AND reg_periksa.tgl_registrasi BETWEEN '"+Valid.SetTgl(Tgl1.getSelectedItem()+"")+"' AND '"+Valid.SetTgl(Tgl2.getSelectedItem()+"")+"'");
                 ttlrujukan=ttlrujukan+rujukan;
@@ -447,8 +457,10 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 nonrujukan = Sequel.cariInteger("SELECT COUNT(reg_periksa.no_rawat) FROM reg_periksa "
                         + "INNER JOIN data_triase_igd " 
                         + "ON reg_periksa.no_rawat = data_triase_igd.no_rawat "
+                        
                         + "INNER JOIN master_triase_macam_kasus "
                         + "ON data_triase_igd.kode_kasus = master_triase_macam_kasus.kode_kasus "
+                        
                         + "WHERE master_triase_macam_kasus.kode_kasus = '"+rs.getString("kode_kasus")+"' "
                         + "AND reg_periksa.no_rawat NOT IN (SELECT no_rawat FROM rujuk_masuk) "
                         + "AND reg_periksa.tgl_registrasi BETWEEN '"+Valid.SetTgl(Tgl1.getSelectedItem()+"")+"' AND '"+Valid.SetTgl(Tgl2.getSelectedItem()+"")+"'");
@@ -462,10 +474,13 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 dirawat = Sequel.cariInteger("SELECT COUNT(reg_periksa.no_rawat) FROM reg_periksa "
                         + "INNER JOIN data_triase_igd " 
                         + "ON reg_periksa.no_rawat = data_triase_igd.no_rawat "
+                        
                         + "INNER JOIN master_triase_macam_kasus "
                         + "ON data_triase_igd.kode_kasus = master_triase_macam_kasus.kode_kasus "
+                        
                         + "INNER JOIN kamar_inap "
                         + "ON reg_periksa.no_rawat = kamar_inap.no_rawat "
+                        
                         + "WHERE master_triase_macam_kasus.kode_kasus = '"+rs.getString("kode_kasus")+"' "
                         + "AND reg_periksa.tgl_registrasi BETWEEN '"+Valid.SetTgl(Tgl1.getSelectedItem()+"")+"' AND '"+Valid.SetTgl(Tgl2.getSelectedItem()+"")+"'");
                 ttldirawat=ttldirawat+dirawat;
@@ -477,10 +492,13 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 dirujuk = Sequel.cariInteger("SELECT COUNT(rujuk.no_rawat) FROM reg_periksa "
                         + "INNER JOIN data_triase_igd "
                         + "ON reg_periksa.no_rawat = data_triase_igd.no_rawat "
+                        
                         + "INNER JOIN master_triase_macam_kasus "
                         + "ON data_triase_igd.kode_kasus = master_triase_macam_kasus.kode_kasus "
+                        
                         + "INNER JOIN rujuk "
                         + "ON reg_periksa.no_rawat = rujuk.no_rawat "
+                        
                         + "WHERE master_triase_macam_kasus.kode_kasus = '"+rs.getString("kode_kasus")+"' "
                         + "AND reg_periksa.tgl_registrasi BETWEEN '"+Valid.SetTgl(Tgl1.getSelectedItem()+"")+"' AND '"+Valid.SetTgl(Tgl2.getSelectedItem()+"")+"'");
                 ttldirujuk=ttldirujuk+dirujuk;
@@ -493,12 +511,16 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 matiigdL = Sequel.cariInteger("SELECT COUNT(reg_periksa.no_rkm_medis) FROM reg_periksa "
                         + "INNER JOIN data_triase_igd "
                         + "ON reg_periksa.no_rawat = data_triase_igd.no_rawat "
+                        
                         + "INNER JOIN master_triase_macam_kasus "
                         + "ON data_triase_igd.kode_kasus = master_triase_macam_kasus.kode_kasus "
+                        
                         + "INNER JOIN pasien_mati "
                         + "ON reg_periksa.no_rkm_medis = pasien_mati.no_rkm_medis "
+                        
                         + "INNER JOIN pasien "
-                        + "ON pasien.no_rkm_medis = pasien_mati.no_rkm_medis"
+                        + "ON pasien.no_rkm_medis = pasien_mati.no_rkm_medis "
+                        
                         + "WHERE master_triase_macam_kasus.kode_kasus = '"+rs.getString("kode_kasus")+"' "
                         + "AND pasien.jk = 'L' "
                         + "AND reg_periksa.tgl_registrasi BETWEEN '"+Valid.SetTgl(Tgl1.getSelectedItem()+"")+"' AND '"+Valid.SetTgl(Tgl2.getSelectedItem()+"")+"'");
@@ -507,12 +529,16 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 matiigdP = Sequel.cariInteger("SELECT COUNT(reg_periksa.no_rkm_medis) FROM reg_periksa "
                         + "INNER JOIN data_triase_igd "
                         + "ON reg_periksa.no_rawat = data_triase_igd.no_rawat "
+                        
                         + "INNER JOIN master_triase_macam_kasus "
                         + "ON data_triase_igd.kode_kasus = master_triase_macam_kasus.kode_kasus "
+                        
                         + "INNER JOIN pasien_mati "
                         + "ON reg_periksa.no_rkm_medis = pasien_mati.no_rkm_medis "
-                        + "INNER JOIN pasien.no_rkm_medis "
-                        + "ON pasien.no_rkm_medis = pasien_mati.no_rkm_medis"
+                        
+                        + "INNER JOIN pasien "
+                        + "ON pasien.no_rkm_medis = pasien_mati.no_rkm_medis "
+                        
                         + "WHERE master_triase_macam_kasus.kode_kasus = '"+rs.getString("kode_kasus")+"' "
                         + "AND pasien.jk = 'P' "
                         + "AND reg_periksa.tgl_registrasi BETWEEN '"+Valid.SetTgl(Tgl1.getSelectedItem()+"")+"' AND '"+Valid.SetTgl(Tgl2.getSelectedItem()+"")+"'");
@@ -524,11 +550,13 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
 //                        "kamar_inap.stts_pulang<>('Rujuk' or 'Meninggal' or 'Pindah Kamar') group by reg_periksa.no_rawat");
 //                ttlpulang=ttlpulang+pulang;
 
-                pulang = Sequel.cariInteger("SELECT COUNT(rujuk.no_rawat) FROM reg_periksa "
+                pulang = Sequel.cariInteger("SELECT COUNT(reg_periksa.no_rawat) FROM reg_periksa "
                         + "INNER JOIN data_triase_igd "
                         + "ON reg_periksa.no_rawat = data_triase_igd.no_rawat "
+                        
                         + "INNER JOIN master_triase_macam_kasus "
                         + "ON data_triase_igd.kode_kasus = master_triase_macam_kasus.kode_kasus "
+                        
                         + "WHERE master_triase_macam_kasus.kode_kasus = '"+rs.getString("kode_kasus")+"' "
                         + "AND reg_periksa.stts='Sudah' "
                         + "AND reg_periksa.tgl_registrasi BETWEEN '"+Valid.SetTgl(Tgl1.getSelectedItem()+"")+"' AND '"+Valid.SetTgl(Tgl2.getSelectedItem()+"")+"'");
@@ -537,30 +565,38 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 doaL = Sequel.cariInteger("SELECT COUNT(reg_periksa.no_rkm_medis) FROM reg_periksa "
                         + "INNER JOIN data_triase_igd "
                         + "ON reg_periksa.no_rawat = data_triase_igd.no_rawat "
+                        
                         + "INNER JOIN master_triase_macam_kasus "
                         + "ON data_triase_igd.kode_kasus = master_triase_macam_kasus.kode_kasus "
+                        
                         + "INNER JOIN pasien_mati "
                         + "ON reg_periksa.no_rkm_medis = pasien_mati.no_rkm_medis "
+                        
                         + "INNER JOIN pasien "
                         + "ON pasien.no_rkm_medis = pasien_mati.no_rkm_medis "
+                        
                         + "WHERE master_triase_macam_kasus.kode_kasus = '"+rs.getString("kode_kasus")+"' "
                         + "AND pasien.jk = 'L' "
-                        + "AND pasien_mati.temp_meninggal = 'DOA'"
+                        + "AND pasien_mati.temp_meninggal = 'DOA' "
                         + "AND reg_periksa.tgl_registrasi BETWEEN '"+Valid.SetTgl(Tgl1.getSelectedItem()+"")+"' AND '"+Valid.SetTgl(Tgl2.getSelectedItem()+"")+"'");
                 ttldoaL=ttldoaL+doaL;
                 
                 doaP = Sequel.cariInteger("SELECT COUNT(reg_periksa.no_rkm_medis) FROM reg_periksa "
                         + "INNER JOIN data_triase_igd "
                         + "ON reg_periksa.no_rawat = data_triase_igd.no_rawat "
+                        
                         + "INNER JOIN master_triase_macam_kasus "
                         + "ON data_triase_igd.kode_kasus = master_triase_macam_kasus.kode_kasus "
+                        
                         + "INNER JOIN pasien_mati "
                         + "ON reg_periksa.no_rkm_medis = pasien_mati.no_rkm_medis "
+                        
                         + "INNER JOIN pasien "
                         + "ON pasien.no_rkm_medis = pasien_mati.no_rkm_medis "
+                        
                         + "WHERE master_triase_macam_kasus.kode_kasus = '"+rs.getString("kode_kasus")+"' "
                         + "AND pasien.jk = 'P' "
-                        + "AND pasien_mati.temp_meninggal = 'DOA'"
+                        + "AND pasien_mati.temp_meninggal = 'DOA' "
                         + "AND reg_periksa.tgl_registrasi BETWEEN '"+Valid.SetTgl(Tgl1.getSelectedItem()+"")+"' AND '"+Valid.SetTgl(Tgl2.getSelectedItem()+"")+"'");
                 ttldoaP=ttldoaP+doaP;
                 
@@ -568,17 +604,22 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 lukaL = Sequel.cariInteger("SELECT COUNT(reg_periksa.no_rawat) FROM reg_periksa "
                         + "INNER JOIN data_triase_igd "
                         + "ON reg_periksa.no_rawat = data_triase_igd.no_rawat "
+                        
                         + "INNER JOIN master_triase_macam_kasus "
                         + "ON data_triase_igd.kode_kasus = master_triase_macam_kasus.kode_kasus "
+                        
                         + "INNER JOIN data_triase_igdprimer "
                         + "ON reg_periksa.no_rawat = data_triase_igdprimer.no_rawat "
+                        
                         + "INNER JOIN data_triase_igdsekunder "
                         + "ON reg_periksa.no_rawat = data_triase_igdsekunder.no_rawat "
+                        
                         + "INNER JOIN pasien "
                         + "ON pasien.no_rkm_medis = reg_periksa.no_rkm_medis "
+                        
                         + "WHERE master_triase_macam_kasus.kode_kasus = '"+rs.getString("kode_kasus")+"' "
-                        + "AND data_triase_igdprimer.keluhan_utama LIKE '%luka%' "
-                        + "OR data_triase_igdsekunder.anamnesa_singkat LIKE '%luka%' "
+                        + "AND (data_triase_igdprimer.keluhan_utama LIKE '%luka%' "
+                        + "OR data_triase_igdsekunder.anamnesa_singkat LIKE '%luka%') "
                         + "AND pasien.jk='L' "
                         + "AND reg_periksa.tgl_registrasi BETWEEN '"+Valid.SetTgl(Tgl1.getSelectedItem()+"")+"' AND '"+Valid.SetTgl(Tgl2.getSelectedItem()+"")+"'");
                 ttllukaL=ttllukaL+lukaL;
@@ -586,29 +627,49 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 lukaP = Sequel.cariInteger("SELECT COUNT(reg_periksa.no_rawat) FROM reg_periksa "
                         + "INNER JOIN data_triase_igd "
                         + "ON reg_periksa.no_rawat = data_triase_igd.no_rawat "
+                        
                         + "INNER JOIN master_triase_macam_kasus "
                         + "ON data_triase_igd.kode_kasus = master_triase_macam_kasus.kode_kasus "
+                        
                         + "INNER JOIN data_triase_igdprimer "
                         + "ON reg_periksa.no_rawat = data_triase_igdprimer.no_rawat "
+                        
                         + "INNER JOIN data_triase_igdsekunder "
                         + "ON reg_periksa.no_rawat = data_triase_igdsekunder.no_rawat "
+                        
                         + "INNER JOIN pasien "
                         + "ON pasien.no_rkm_medis = reg_periksa.no_rkm_medis "
+                        
                         + "WHERE master_triase_macam_kasus.kode_kasus = '"+rs.getString("kode_kasus")+"' "
-                        + "AND data_triase_igdprimer.keluhan_utama LIKE '%luka%' "
-                        + "OR data_triase_igdsekunder.anamnesa_singkat LIKE '%luka%' "
+                        + "AND (data_triase_igdprimer.keluhan_utama LIKE '%luka%' "
+                        + "OR data_triase_igdsekunder.anamnesa_singkat LIKE '%luka%') "
                         + "AND pasien.jk='P' "
                         + "AND reg_periksa.tgl_registrasi BETWEEN '"+Valid.SetTgl(Tgl1.getSelectedItem()+"")+"' AND '"+Valid.SetTgl(Tgl2.getSelectedItem()+"")+"'");
                 ttllukaP=ttllukaP+lukaP;
                 
+                falseEmer = Sequel.cariInteger("SELECT COUNT(reg_periksa.no_rawat) FROM reg_periksa "
+                        + "INNER JOIN data_triase_igd "
+                        + "ON reg_periksa.no_rawat = data_triase_igd.no_rawat "
+                        
+                        + "INNER JOIN master_triase_macam_kasus "
+                        + "ON data_triase_igd.kode_kasus = master_triase_macam_kasus.kode_kasus "
+                        
+                        + "INNER JOIN data_triase_igdsekunder "
+                        + "ON reg_periksa.no_rawat = data_triase_igdsekunder.no_rawat "
+                                                
+                        + "WHERE master_triase_macam_kasus.kode_kasus = '"+rs.getString("kode_kasus")+"' "
+                        + "AND data_triase_igdsekunder.plan = 'Zona Hijau' "
+                        + "AND reg_periksa.tgl_registrasi BETWEEN '"+Valid.SetTgl(Tgl1.getSelectedItem()+"")+"' AND '"+Valid.SetTgl(Tgl2.getSelectedItem()+"")+"'");
+                ttlfalseEmer = ttlfalseEmer+falseEmer;
+                
                 tabMode.addRow(new Object[]{
-                    i,rs.getString("macam_kasus"),rujukan,nonrujukan,dirawat,dirujuk,pulang,matiigdL,matiigdP,doaL,doaP,lukaL,lukaP
+                    i,rs.getString("macam_kasus"),rujukan,nonrujukan,dirawat,dirujuk,pulang,matiigdL,matiigdP,doaL,doaP,lukaL,lukaP,falseEmer
                 });
                 i++;
             }
             if(i>1){
                 tabMode.addRow(new Object[]{
-                    "","TOTAL",ttlrujukan,ttlnonrujukan,ttldirawat,ttldirujuk,ttlpulang,ttlmatiigdL,ttlmatiigdP,ttldoaL,ttldoaP,ttllukaL,ttllukaP
+                    "","TOTAL",ttlrujukan,ttlnonrujukan,ttldirawat,ttldirujuk,ttlpulang,ttlmatiigdL,ttlmatiigdP,ttldoaL,ttldoaP,ttllukaL,ttllukaP,ttlfalseEmer
                 });
             }
             this.setCursor(Cursor.getDefaultCursor());
