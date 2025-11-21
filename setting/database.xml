@@ -2,22 +2,18 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <comment>KhanzaHMS</comment> 
-<!--    <entry key="HOST">5k7+C7EnUw9nUv2Nix+DBA==</entry>
+    <entry key="HOST">AAEESIea+Z+MfLkuG7usQQ==</entry>
     <entry key="DATABASE">Q/A6/fvJNnYSSWZmZ8SdzA==</entry>
     <entry key="PORT">nioxtijcpDaKSUiUiP5FAg==</entry>
-    <entry key="USER">kMR3WfAwUK6MbhCyydxa0g==</entry>
-    <entry key="PAS">l4nh5eVYrLAER/I2A4b3Tw==</entry>-->
-    
-    <entry key="HOST">11yo8NeLRq65WScHqIEgFQ==</entry>
-    <entry key="DATABASE">xlIfGQEDmPq6/riiPvW5tg==</entry>
-    <entry key="PORT">nioxtijcpDaKSUiUiP5FAg==</entry>
     <entry key="USER">EBoQO2HA48GQZc6aY7UKwQ==</entry>
-    <entry key="PAS">X/+zem5cJA611EbXr5grhg==</entry>
+    <entry key="PAS">pF3P1sxeZdgWxPwspVnwjg==</entry>
     
     <entry key="CARICEPAT">nonaktif</entry>
+    
     <entry key="HOSTHYBRIDWEB">5k7+C7EnUw9nUv2Nix+DBA==</entry>
     <entry key="USERHYBRIDWEB">nmXqCKzrz9i8GTZlq7JruQ==</entry>
     <entry key="PASHYBRIDWEB">AsJ/0/gCnYnD+gK4fw9uKA==</entry>
+    
     <entry key="HYBRIDWEB">webapps</entry>
     <entry key="PORTWEB">80</entry>
     <entry key="AKTIFKANWARNARALAN">no</entry>
@@ -38,7 +34,7 @@
     <entry key="ALARMBOOKINGPERIKSA">yes</entry>
     <entry key="ALARMPENGADUANPASIEN">yes</entry>
     <entry key="ALARMPERMINTAANRANAP">yes</entry>
-    <entry key="MENUTRANSPARAN">yes</entry>
+    <entry key="MENUTRANSPARAN">no</entry>
     <entry key="TANGGALMUNDUR">yes</entry>
     <entry key="URLAPIBPJS">https://apijkn.bpjs-kesehatan.go.id/vclaim-rest</entry>
     <entry key="SECRETKEYAPIBPJS">l4nh5eVYrLAER/I2A4b3Tw==</entry>

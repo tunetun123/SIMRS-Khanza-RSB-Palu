@@ -174,6 +174,10 @@ public class DlgPasienMati extends javax.swing.JDialog {
         TCari = new widget.TextBox();
         BtnCari = new widget.Button();
         BtnAll = new widget.Button();
+        label11 = new widget.Label();
+        Tgl1 = new widget.Tanggal();
+        label18 = new widget.Label();
+        Tgl2 = new widget.Tanggal();
         PanelInput = new javax.swing.JPanel();
         ChkInput = new widget.CekBox();
         FormInput = new widget.panelisi();
@@ -447,6 +451,37 @@ public class DlgPasienMati extends javax.swing.JDialog {
         });
         panelGlass9.add(BtnAll);
 
+        label11.setText("Tanggal :");
+        label11.setName("label11"); // NOI18N
+        label11.setPreferredSize(new java.awt.Dimension(60, 23));
+        panelGlass9.add(label11);
+
+        Tgl1.setDisplayFormat("dd-MM-yyyy");
+        Tgl1.setName("Tgl1"); // NOI18N
+        Tgl1.setPreferredSize(new java.awt.Dimension(90, 23));
+        Tgl1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                Tgl1KeyPressed(evt);
+            }
+        });
+        panelGlass9.add(Tgl1);
+
+        label18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label18.setText("s.d.");
+        label18.setName("label18"); // NOI18N
+        label18.setPreferredSize(new java.awt.Dimension(25, 23));
+        panelGlass9.add(label18);
+
+        Tgl2.setDisplayFormat("dd-MM-yyyy");
+        Tgl2.setName("Tgl2"); // NOI18N
+        Tgl2.setPreferredSize(new java.awt.Dimension(90, 23));
+        Tgl2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                Tgl2KeyPressed(evt);
+            }
+        });
+        panelGlass9.add(Tgl2);
+
         jPanel3.add(panelGlass9, java.awt.BorderLayout.PAGE_START);
 
         internalFrame1.add(jPanel3, java.awt.BorderLayout.PAGE_END);
@@ -514,7 +549,7 @@ public class DlgPasienMati extends javax.swing.JDialog {
 
         DTPTgl.setEditable(false);
         DTPTgl.setForeground(new java.awt.Color(50, 70, 50));
-        DTPTgl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "19-02-2025" }));
+        DTPTgl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "17-11-2025" }));
         DTPTgl.setDisplayFormat("dd-MM-yyyy");
         DTPTgl.setName("DTPTgl"); // NOI18N
         DTPTgl.setOpaque(false);
@@ -1096,6 +1131,14 @@ private void MnCetakSuratMatiActionPerformed(java.awt.event.ActionEvent evt) {//
         }
     }//GEN-LAST:event_BtnDokterKeyPressed
 
+    private void Tgl1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Tgl1KeyPressed
+        Valid.pindah(evt,BtnKeluar,Tgl2);
+    }//GEN-LAST:event_Tgl1KeyPressed
+
+    private void Tgl2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Tgl2KeyPressed
+        Valid.pindah(evt, Tgl1,TCari);
+    }//GEN-LAST:event_Tgl2KeyPressed
+
     /**
     * @param args the command line arguments
     */
@@ -1137,6 +1180,8 @@ private void MnCetakSuratMatiActionPerformed(java.awt.event.ActionEvent evt) {//
     private widget.TextBox TKtg;
     private widget.TextBox TNoRM;
     private widget.TextBox TPasien;
+    private widget.Tanggal Tgl1;
+    private widget.Tanggal Tgl2;
     private widget.ComboBox cmbDtk;
     private widget.ComboBox cmbJam;
     private widget.ComboBox cmbMnt;
@@ -1160,6 +1205,8 @@ private void MnCetakSuratMatiActionPerformed(java.awt.event.ActionEvent evt) {//
     private widget.Label jLabel9;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPopupMenu jPopupMenu1;
+    private widget.Label label11;
+    private widget.Label label18;
     private widget.panelisi panelGlass8;
     private widget.panelisi panelGlass9;
     private widget.Table tbMati;
@@ -1175,18 +1222,20 @@ private void MnCetakSuratMatiActionPerformed(java.awt.event.ActionEvent evt) {//
                    "pasien_mati.icd3,pasien_mati.icd4,pasien_mati.kd_dokter,dokter.nm_dokter "+
                    "from pasien_mati inner join pasien on pasien_mati.no_rkm_medis=pasien.no_rkm_medis "+
                    "inner join dokter on pasien_mati.kd_dokter=dokter.kd_dokter "+
+                   "where pasien_mati.tanggal between ? and ? " +  
                    (TCari.getText().trim().equals("")?"":
-                   "where pasien_mati.tanggal like '%"+TCari.getText().trim()+"%' or "+
-                   "pasien_mati.no_rkm_medis like '%"+TCari.getText().trim()+"%' or "+
+                   "and (pasien_mati.no_rkm_medis like '%"+TCari.getText().trim()+"%' or "+
                    "pasien.nm_pasien like '%"+TCari.getText().trim()+"%' or "+
                    "pasien.stts_nikah like '%"+TCari.getText().trim()+"%' or "+
                    "pasien.agama like '%"+TCari.getText().trim()+"%' or "+
                    "pasien_mati.kd_dokter like '%"+TCari.getText().trim()+"%' or "+
                    "dokter.nm_dokter like '%"+TCari.getText().trim()+"%' or "+
                    "pasien_mati.icd1 like '%"+TCari.getText().trim()+"%' or "+
-                   "pasien_mati.keterangan like '%"+TCari.getText().trim()+"%' ")+
+                   "pasien_mati.keterangan like '%"+TCari.getText().trim()+"%') ")+
                    "order by pasien_mati.tanggal ");
             try {
+                ps.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
+                ps.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
                 rs=ps.executeQuery();
                 while(rs.next()){               
                     tabMode.addRow(new Object[]{
